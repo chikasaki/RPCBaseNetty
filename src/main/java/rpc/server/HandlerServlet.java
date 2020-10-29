@@ -1,6 +1,7 @@
 package rpc.server;
 
 import rpc.message.CallContent;
+import rpc.message.HttpCallContent;
 import rpc.message.RetContent;
 
 import javax.servlet.ServletException;
@@ -26,6 +27,10 @@ public class HandlerServlet extends HttpServlet {
             ObjectOutputStream oout = new ObjectOutputStream(out);
             RetContent retContent = new RetContent();
             retContent.setRes(res);
+            if(callContent instanceof HttpCallContent) {
+                HttpCallContent httpCallContent = (HttpCallContent) callContent;
+                retContent.setState(httpCallContent.getState());
+            }
             oout.writeObject(retContent);
         } catch (ClassNotFoundException e) {
             e.printStackTrace();

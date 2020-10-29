@@ -1,9 +1,10 @@
 package rpc.proxy;
 
 import rpc.client.Transportation;
-import rpc.client.clientImpl.HttpTransportation;
-import rpc.client.clientImpl.MyPTransportation;
+import rpc.client.clientImpl.HttpNonStateTransportation;
 import rpc.message.CallContent;
+import rpc.message.HttpCallContent;
+import rpc.utils.Helper;
 
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
@@ -25,17 +26,25 @@ public class MyProxy {
                 Class<?>[] parameterTypes = method.getParameterTypes();
 
                 // 1. 传送对象的封装
-                CallContent msgContent = new CallContent();
+//                CallContent msgContent = new CallContent();
+//                {
+//                    msgContent.setClassName(className);
+//                    msgContent.setMethodName(methodName);
+//                    msgContent.setParameters(args);
+//                    msgContent.setParameterTypes(parameterTypes);
+//                }
+
+                HttpCallContent msgContent = new HttpCallContent();
                 {
                     msgContent.setClassName(className);
                     msgContent.setMethodName(methodName);
                     msgContent.setParameters(args);
                     msgContent.setParameterTypes(parameterTypes);
+                    msgContent.setState(Helper.getRandomID());
                 }
-
 //                Transportation myPTransportation = new MyPTransportation();
 //                CompletableFuture cf = myPTransportation.transport(msgContent);
-                Transportation transportation = new HttpTransportation();
+                Transportation transportation = new HttpNonStateTransportation();
                 CompletableFuture cf = transportation.transport(msgContent);
 
                 return cf.get();

@@ -14,7 +14,7 @@ import rpc.utils.Helper;
 
 import java.util.concurrent.CompletableFuture;
 
-public class HttpTransportation implements Transportation {
+public class HttpNonStateTransportation implements Transportation {
 
     private static NioEventLoopGroup group = new NioEventLoopGroup(1);
 
